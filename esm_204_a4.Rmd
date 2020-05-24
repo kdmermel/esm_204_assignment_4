@@ -10,21 +10,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 
+# Variables
 # temperature at time t
 # t = time
-# T = temperature at time 100
-temp = function(t, T)
-{out = min(t*T/100, T)
+# T = temperature at time 100 (given)
+
+
+
+t_vector <- seq(0,100, by = 1)
+
+temp <-  function(t, T)
+{  out = min(t*T/100, T)
 return(out)
 }
 
-temp(t = 50, T = 5)
+#temp_df_T_0 <- data.frame(temp(t_vector,0))
+
+T_0_df <- data.frame(t = t_vector) %>% 
+  mutate(tau = temp(t_vector, T))# %>% 
+ # mutate(K = retention(t_vector, temp) )
+
+
 
 # fraction of economic activity retained in a year
 # r = temperature at time t
 # B = some constant we're given
-retention = function(t, r, B)
-{out = exp(-B*r^2)
+retention = function(t, temp, B)
+{out = exp(-B*temp^2)
 return(out)}
 
 retention(t = 10, r = temp(t = 50, T = 5), B = 0.05)
