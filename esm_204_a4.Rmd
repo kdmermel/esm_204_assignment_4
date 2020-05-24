@@ -15,18 +15,19 @@ library(tidyverse)
 # t = time
 # T = temperature at time 100 (given)
 
-T <- 0 #overall value for T
+T <- 200 #overall value for T
 
 #______________________________________________
 
-t_vector <- seq(0,100, by = 1)
+t_vector <- seq(1,100, by = 1)
 
 temp <-  function(t, T)
 {  out = min(t*T/100, T)
 return(out)
 }
 
-temp_df_T_0 <- data.frame(temp(t_vector,T))
+temp_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(temp_head = temp(t_vector, T))
 
 T_0_df <- data.frame(t = t_vector) %>% 
   mutate(tau = temp(t_vector, T))# %>% 
