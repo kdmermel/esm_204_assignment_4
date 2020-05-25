@@ -257,6 +257,97 @@ ggplot () +
                   color = "red")
 ```
 
+Question 2a
+
+*T = 4.4*
+```{r}
+# T = 4.4
+# Maintained givens from plot 1
+
+# Temperature df
+
+temp_df_T_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 4.4))
+
+# Retention df
+
+retent_df_T_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 4.4,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 4.4,
+                              B = 0.05,
+                              g = 0.01))
+
+# Utility df
+
+C_4_4 <- consum_df_T_4_4$consum
+
+utility_df_T_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_4_4) %>% 
+  mutate(utility = utility(C = C_4_4,
+                           n = .5))
+  
+```
+
+
+Present value discounted over 200 years w/ climate change
+
+```{r}
+# Present value discounted over 200 years w/ climate change
+
+# discount rate
+r_given <- r(.005, .5, .01)
+
+# Value calculation
+pv_df_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(pv_4_4 = (utility_df_T_4_4$utility)/(1 + r_given)^(t_vector))
+
+pv_4_4 = sum(pv_df_4_4$pv_4_4)
+
+```
+
+Present value discounted over 200 years w/o climate change
+```{r}
+# Present value discounted over 200 years w/o climate change
+
+# Value calculation
+pv_df_0 <- data.frame(t = t_vector) %>% 
+  mutate(pv_0 = (utility_df_T_0$utility)/(1 + r_given)^(t_vector))
+
+pv_0 = sum(pv_df_0$pv_0)
+
+```
+
+Percentage Loss (L)
+```{r}
+
+L_cc <- abs(pv_0-pv_4_4)/pv_0 * 100
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
