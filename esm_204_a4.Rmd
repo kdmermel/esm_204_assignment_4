@@ -5,6 +5,11 @@ date: "5/24/2020"
 output: pdf_document
 ---
 
+Overall questions:
+
+  1. Do we need to start from year 0 on the sequence? If we do the min values will be skewed to always have min of 0
+  2. Do we plot the non-min column in the temp df or the min value? 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -21,22 +26,8 @@ library(tidyverse)
 
 t_vector <- seq(1,200, by = 1)
 
-# Givens for Part 1
-
-#t_diff = 5 # T
-#B = .05
-#g = .01
-#n = .5
-#d = .005   # delta
-
-
-
-
 ```
-Overall questions:
 
-  1. Do we need to start from year 0 on the sequence? If we do the min values will be skewed to always have min of 0
-  2. Do we plot the non-min column in the temp df or the min value? 
 
 Structure for Functions 1 - 5 is next.
 **IMPORTANT** Because we will need both the exact value for a function at a given T (or K(t), or other value etc) I made a general function and a specific function. The general is used to populate the data frames with plottable points. The specific is meant to return a single values (sv) result.
@@ -99,42 +90,128 @@ r <- function(d, n, g){
 ```
 
 
-Data Frames for Plots
+*Data Frames for Plots*
+
+Givens for Part 1
+
+t_diff = 5 # T
+B = .05
+g = .01
+n = .5
+d = .005   # delta
+
+*T = 0*
+
 ```{r}
+# T = 0
+
 # Temperature df
 
 temp_df_T_0 <- data.frame(t = t_vector) %>% 
   mutate(temp = temp(t_vector,
-                     t_diff = 5)) %>% 
+                     t_diff = 0)) %>% 
   mutate(temp_min = min(temp(t_vector,
-                             t_diff = 5)))
+                             t_diff = 0)))
 
 # Retention df
 
 retent_df_T_0 <- data.frame(t = t_vector) %>% 
   mutate(retent = retention(t_vector,
-                            t_diff = 5,
+                            t_diff = 0,
                             B = .05)) 
 # Consumption df
 
 consum_df_T_0 <- data.frame(t = t_vector) %>% 
   mutate(consum = consumption(t_vector,
-                              t_diff = 5,
+                              t_diff = 0,
                               B = 0.05,
                               g = 0.1))
 
 # Utility df
 
-C <- consum_df_T_0$consum
+C_0 <- consum_df_T_0$consum
 
 utility_df_T_0 <- data.frame(t = t_vector) %>% 
-  mutate(consum = C) %>% 
-  mutate(utility = utility(C,
+  mutate(consum = C_0) %>% 
+  mutate(utility = utility(C = C_0,
                            n = .5))
   
 ```
 
+*T = 2*
 
+```{r}
+# T = 2
+
+# Temperature df
+
+temp_df_T_2 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 2)) %>% 
+  mutate(temp_min = min(temp(t_vector,
+                             t_diff = 2)))
+
+# Retention df
+
+retent_df_T_2 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 2,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_2 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 2,
+                              B = 0.05,
+                              g = 0.1))
+
+# Utility df
+
+C_2 <- consum_df_T_2$consum
+
+utility_df_T_2 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_2) %>% 
+  mutate(utility = utility(C = C_2,
+                           n = .5))
+  
+```
+
+*T = 8*
+```{r}
+# T = 8
+
+# Temperature df
+
+temp_df_T_8 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 8)) %>% 
+  mutate(temp_min = min(temp(t_vector,
+                             t_diff = 8)))
+
+# Retention df
+
+retent_df_T_8 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 8,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_8 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 8,
+                              B = 0.05,
+                              g = 0.1))
+
+# Utility df
+
+C_8 <- consum_df_T_8$consum
+
+utility_df_T_8 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_8) %>% 
+  mutate(utility = utility(C = C_8,
+                           n = .5))
+  
+```
 
 Question 1
 ```{r}
