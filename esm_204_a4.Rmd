@@ -7,8 +7,6 @@ output: pdf_document
 
 Overall questions:
 
-  1. Do we need to start from year 0 on the sequence? If we do the min values will be skewed to always have min of 0
-  2. Do we plot the non-min column in the temp df or the min value? 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -24,27 +22,21 @@ library(tidyverse)
 
 # Givens & Vectors:
 
-t_vector <- seq(1,200, by = 1)
+t_vector <- seq(0,200, by = 1)
 
 ```
 
 
 Structure for Functions 1 - 5 is next.
-**IMPORTANT** Because we will need both the exact value for a function at a given T (or K(t), or other value etc) I made a general function and a specific function. The general is used to populate the data frames with plottable points. The specific is meant to return a single values (sv) result.
-
 
 ```{r}
 # Function 1 - Temperature(t)
 
 temp <- function(t, t_diff){
-  out = t*t_diff/100
+  out = pmin((t*t_diff)/100,t_diff)
   return(out)
 }
 
-temp_min <- function(t, t_diff){
-  out = min(t*t_diff/100)
-  return(out)
-}
 
 # Function 2 - Retention (t)
 
@@ -53,20 +45,10 @@ retention <- function(t, t_diff, B){
   return(out)
 }
 
-retention_sv <- function(t, t_diff, B){
-  out = exp(-B * (temp_min(t, t_diff))^2)
-  return(out)
-}
-
 
 # Function 3 - Consumption (t)
 consumption <- function(t, t_diff, B, g){
   out = retention(t, t_diff, B) * exp(g*t)
-  return(out)
-}
-
-consumption_sv <- function(t, t_diff, B, g){
-  out = retention_sv(t, t_diff, B) * exp(g*t)
   return(out)
 }
 
@@ -109,9 +91,8 @@ d = .005   # delta
 
 temp_df_T_0 <- data.frame(t = t_vector) %>% 
   mutate(temp = temp(t_vector,
-                     t_diff = 0)) %>% 
-  mutate(temp_min = min(temp(t_vector,
-                             t_diff = 0)))
+                     t_diff = 0))
+  
 
 # Retention df
 
@@ -147,9 +128,7 @@ utility_df_T_0 <- data.frame(t = t_vector) %>%
 
 temp_df_T_2 <- data.frame(t = t_vector) %>% 
   mutate(temp = temp(t_vector,
-                     t_diff = 2)) %>% 
-  mutate(temp_min = min(temp(t_vector,
-                             t_diff = 2)))
+                     t_diff = 2)) 
 
 # Retention df
 
@@ -184,9 +163,7 @@ utility_df_T_2 <- data.frame(t = t_vector) %>%
 
 temp_df_T_8 <- data.frame(t = t_vector) %>% 
   mutate(temp = temp(t_vector,
-                     t_diff = 8)) %>% 
-  mutate(temp_min = min(temp(t_vector,
-                             t_diff = 8)))
+                     t_diff = 8))
 
 # Retention df
 
@@ -224,6 +201,39 @@ Question 1
 
 # scenario 3: major climate change
 ```
+
+
+Plot 1a
+```{r}
+ggplot () +
+  geom_point(data = temp_df_T_0,
+             aes( x = t,
+                  y = temp),
+                  color = "blue") 
+               
+             
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Initial code from first discussion I didn't want to delete without talking to y'all - GEM
