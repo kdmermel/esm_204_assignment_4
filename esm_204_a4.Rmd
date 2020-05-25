@@ -106,7 +106,7 @@ consum_df_T_0 <- data.frame(t = t_vector) %>%
   mutate(consum = consumption(t_vector,
                               t_diff = 0,
                               B = 0.05,
-                              g = 0.1))
+                              g = 0.01))
 
 # Utility df
 
@@ -142,7 +142,7 @@ consum_df_T_2 <- data.frame(t = t_vector) %>%
   mutate(consum = consumption(t_vector,
                               t_diff = 2,
                               B = 0.05,
-                              g = 0.1))
+                              g = 0.01))
 
 # Utility df
 
@@ -177,7 +177,7 @@ consum_df_T_8 <- data.frame(t = t_vector) %>%
   mutate(consum = consumption(t_vector,
                               t_diff = 8,
                               B = 0.05,
-                              g = 0.1))
+                              g = 0.01))
 
 # Utility df
 
@@ -209,9 +209,52 @@ ggplot () +
   geom_point(data = temp_df_T_0,
              aes( x = t,
                   y = temp),
-                  color = "blue") 
-               
+                  color = "blue") +
+  geom_point(data = temp_df_T_2,
+             aes( x = t,
+                  y = temp),
+                  color = "green") +
+  geom_point(data = temp_df_T_8,
+             aes( x = t,
+                  y = temp),
+                  color = "red")
+
              
+```
+
+Plot 1b
+```{r}
+ggplot () +
+  geom_point(data = consum_df_T_0,
+             aes( x = t,
+                  y = consum),
+                  color = "blue") +
+  geom_point(data = consum_df_T_2,
+             aes( x = t,
+                  y = consum),
+                  color = "green") +
+  geom_point(data = consum_df_T_8,
+             aes( x = t,
+                  y = consum),
+                  color = "red")
+```
+
+
+
+```{r}
+ggplot () +
+  geom_point(data = utility_df_T_0,
+             aes( x = t,
+                  y = utility),
+                  color = "blue") +
+  geom_point(data = utility_df_T_2,
+             aes( x = t,
+                  y = utility),
+                  color = "green") +
+  geom_point(data = utility_df_T_8,
+             aes( x = t,
+                  y = utility),
+                  color = "red")
 ```
 
 
@@ -220,65 +263,6 @@ ggplot () +
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Initial code from first discussion I didn't want to delete without talking to y'all - GEM
-
-T_0_df <- data.frame(t = t_vector) %>% 
-  mutate(tau = temp(t_vector))# %>% 
- # mutate(K = retention(t_vector, temp) )
-
-
-
-# fraction of economic activity retained in a year
-# r = temperature at time t
-# B = some constant we're given
-retention = function(t, temp, B)
-{out = exp(-B*temp^2)
-return(out)}
-
-retention(t = 10, r = temp(t = 50, T = 5), B = 0.05)
-
-# economic activity
-# g = some other constant
-# K = retention of economic activity in a year
-consumption = function(t, g, K)
-{out = K*exp(g*t)
-return(out)}
-
-consumption(t = 10, g = 0.01, K = retention(t = 10, r = temp(t = 50, T = 5), B = 0.05))
-
-# utility from consumption
-# C = consumption
-# n = some constant
-utility = function(C, n)
-{out = C^(1-n)/(1-n)
-return(out)}
-
-utility(C = consumption(t = 10, g = 0.01, K = retention(t = 10, r = temp(t = 50, T = 5), B = 0.05)), n = 0.5)
-
-# discount rate, based on Ramsey Rule
-# d = delta aka some constant
-# n and g are both constants we're given
-discount = function(d,n, g)
-{out = d + n*g
-return(out)}
-
-discount(d = 0.005, n = 0.5, g = 0.01)
 
 
 
