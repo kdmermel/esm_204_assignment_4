@@ -19,79 +19,78 @@ library(tidyverse)
 
 # Givens & Vectors:
 
-
 t_vector <- seq(1,200, by = 1)
-t_diff = 5 # T
-B = .05
-g = .01
-n = .5
+
+# Givens for Part 1
+
+#t_diff = 5 # T
+#B = .05
+#g = .01
+#n = .5
+#d = .005   # delta
 
 
 
 
 ```
+Overall questions:
 
+  1. Do we need to start from year 0 on the sequence? If we do the min values will be skewed to always have min of 0
+  2. Do we plot the non-min column in the temp df or the min value? 
 
 Structure for Functions 1 - 5 is next.
-
+**IMPORTANT** Because we will need both the exact value for a function at a given T (or K(t), or other value etc) I made a general function and a specific function. The general is used to populate the data frames with plottable points. The specific is meant to return a single values (sv) result.
 
 
 ```{r}
-# Functions 1 - 5
-
 # Function 1 - Temperature(t)
 
-temp <- function(t){
+temp <- function(t, t_diff){
   out = t*t_diff/100
   return(out)
 }
 
-# Temperature df
-
-temp_df_T_0 <- data.frame(t = t_vector) %>% 
-mutate(temp = temp(t_vector)) %>% 
-mutate(temp_min = min(temp(t_vector)))
+temp_min <- function(t, t_diff){
+  out = min(t*t_diff/100)
+  return(out)
+}
 
 # Function 2 - Retention (t)
-retention <- function(t){
-  out = exp(-B * (temp(t))^2)
+
+retention <- function(t, t_diff, B){
+  out = exp(-B * (temp(t, t_diff))^2)
   return(out)
 }
 
-# Retention df
+retention_sv <- function(t, t_diff, B){
+  out = exp(-B * (temp_min(t, t_diff))^2)
+  return(out)
+}
 
-retent_df_T_0 <- data.frame(t = t_vector) %>% 
-mutate(retent = retention(t_vector)) 
 
 # Function 3 - Consumption (t)
-consumption <- function(t){
-  out = retention(t) * exp(g*t)
+consumption <- function(t, t_diff, B, g){
+  out = retention(t, t_diff, B) * exp(g*t)
   return(out)
 }
 
-# Consumption df
+consumption_sv <- function(t, t_diff, B, g){
+  out = retention_sv(t, t_diff, B) * exp(g*t)
+  return(out)
+}
 
-consum_df_T_0 <- data.frame(t = t_vector) %>% 
-mutate(consum = consumption(t_vector))
 
 # Function 4 - Utility (C)
 
-C <- consum_df_T_0$consum
-
-utility <- function(C){
+utility <- function(C, n){
   out = (C^(1-n))/(1-n)
   return(out)
 }
 
-# Consumption df
-
-utility_df_T_0 <- data.frame(t = t_vector) %>% 
-  mutate(consum = C) %>% 
-  mutate(utility = utility(C))
 
 # Function 5 - Discount Rate (Ramsey Rule)
 
-r <- function(p){
+r <- function(d, n, g){
   out = (d + n*g)
   return(out)
 }
@@ -100,9 +99,58 @@ r <- function(p){
 ```
 
 
-
-
+Data Frames for Plots
 ```{r}
+# Temperature df
+
+temp_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 5)) %>% 
+  mutate(temp_min = min(temp(t_vector,
+                             t_diff = 5)))
+
+# Retention df
+
+retent_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 5,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 5,
+                              B = 0.05,
+                              g = 0.1))
+
+# Utility df
+
+C <- consum_df_T_0$consum
+
+utility_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C) %>% 
+  mutate(utility = utility(C,
+                           n = .5))
+  
+```
+
+
+
+Question 1
+```{r}
+# a
+# plot temperature over time
+# scenario 1: no climate change
+
+
+# scenario 2: moderate climate change
+
+# scenario 3: major climate change
+```
+
+
+Initial code from first discussion I didn't want to delete without talking to y'all - GEM
+
 T_0_df <- data.frame(t = t_vector) %>% 
   mutate(tau = temp(t_vector))# %>% 
  # mutate(K = retention(t_vector, temp) )
@@ -144,17 +192,7 @@ discount = function(d,n, g)
 return(out)}
 
 discount(d = 0.005, n = 0.5, g = 0.01)
-```
-
-Question 1
-```{r}
-# a
-# plot temperature over time
-# scenario 1: no climate change
 
 
-# scenario 2: moderate climate change
 
-# scenario 3: major climate change
-```
 
