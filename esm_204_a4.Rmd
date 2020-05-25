@@ -10,27 +10,58 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 
-# Variables
+# Variables:
 # temperature at time t
 # t = time
-# T = temperature at time 100 (given)
+# t_diff = T = temperature at time 100 (given)
 
-T <- 200 #overall value for T
+ #overall value for T
 
-#______________________________________________
+# Givens & Vectors:
 
-t_vector <- seq(1,100, by = 1)
 
-temp <-  function(t, T)
-{  out = min(t*T/100, T)
-return(out)
+t_vector <- seq(1,200, by = 1)
+t_diff = 5 # T
+B = .05
+
+
+
+
+```
+```{r}
+# Functions 1 - 4
+
+# Function - Temperature(t)
+
+temp <- function(t){
+  out = t*t_diff/100
+  return(out)
 }
 
-temp_df_T_0 <- data.frame(t = t_vector) %>% 
-  mutate(temp_head = temp(t_vector, T))
+# Temperature df
 
+temp_df_T_0 <- data.frame(t = t_vector) %>% 
+mutate(temp = temp(t_vector)) %>% 
+mutate(temp_min = min(temp(t_vector)))
+
+# Function - Retention (t)
+retention <- function(t){
+  out = exp(-B * (temp(t))^2)
+  return(out)
+}
+
+# Retention df
+
+retent_df_T_0 <- data.frame(t = t_vector) %>% 
+mutate(retent = retention(t_vector)) 
+```
+
+
+
+
+```{r}
 T_0_df <- data.frame(t = t_vector) %>% 
-  mutate(tau = temp(t_vector, T))# %>% 
+  mutate(tau = temp(t_vector))# %>% 
  # mutate(K = retention(t_vector, temp) )
 
 
