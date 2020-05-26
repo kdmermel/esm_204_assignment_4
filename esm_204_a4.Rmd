@@ -299,7 +299,7 @@ utility_df_T_4_4 <- data.frame(t = t_vector) %>%
 ```
 
 
-Present value discounted over 200 years w/ climate change
+Present value discounted over 200 years w/ & w/o climate change
 
 ```{r}
 # Present value discounted over 200 years w/ climate change
@@ -313,10 +313,6 @@ pv_df_4_4 <- data.frame(t = t_vector) %>%
 
 pv_4_4 = sum(pv_df_4_4$pv_4_4)
 
-```
-
-Present value discounted over 200 years w/o climate change
-```{r}
 # Present value discounted over 200 years w/o climate change
 
 # Value calculation
@@ -324,7 +320,6 @@ pv_df_0 <- data.frame(t = t_vector) %>%
   mutate(pv_0 = (utility_df_T_0$utility)/(1 + r_given)^(t_vector))
 
 pv_0 = sum(pv_df_0$pv_0)
-
 ```
 
 Percentage Loss (L)
@@ -356,10 +351,206 @@ ggplot () +
 
 **Question 2b**
 
-
+Sensitivity of T
 ```{r}
+# Present value discounted over 200 years w/ climate change
+# T = 4.4 + .44 = 4.84
+
+# Temperature df
+
+temp_df_T_4_84 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 4.84))
+
+# Retention df
+
+retent_df_T_4_84 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 4.84,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_4_84 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 4.84,
+                              B = 0.05,
+                              g = 0.01))
+
+# Utility df
+
+C_4_84 <- consum_df_T_4_84$consum
+
+utility_df_T_4_84 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_4_84) %>% 
+  mutate(utility = utility(C = C_4_84,
+                           n = .5))
+
+# Value calculation
+pv_df_4_84 <- data.frame(t = t_vector) %>% 
+  mutate(pv_4_84 = (utility_df_T_4_84$utility)/(1 + r_given)^(t_vector))
+
+pv_4_84 = sum(pv_df_4_84$pv_4_84)
 
 ```
+
+
+
+Sensitivity of B
+```{r}
+# T = 4.4 ************************************************************************************************
+# B = .055
+
+# Retention df
+
+retent_df_B_055 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 4.4,
+                            B = .055)) 
+# Consumption df
+
+consum_df_B_055 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 4.4,
+                              B = 0.055,
+                              g = 0.01))
+
+# Utility df
+
+C_B_055 <- consum_df_B_055$consum
+
+utility_df_B_055 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_B_055) %>% 
+  mutate(utility = utility(C = C_B_055,
+                           n = .5))
+
+# Value calculation
+pv_df_B_055 <- data.frame(t = t_vector) %>% 
+  mutate(pv_B_055 = (utility_df_B_055$utility)/(1 + r_given)^(t_vector))
+
+pv_B_055 = sum(pv_df_B_055$pv_B_055)
+
+# T = 0 *************************************************************************************************
+# B = .055
+
+# Retention df
+
+retent_df_T_0_B <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 0,
+                            B = .055)) 
+# Consumption df
+
+consum_df_T_0_B <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 0,
+                              B = 0.055,
+                              g = 0.01))
+
+# Utility df
+
+C_0_B <- consum_df_T_0_B$consum
+
+utility_df_T_0_B <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_0_B) %>% 
+  mutate(utility = utility(C = C_0_B,
+                           n = .5))
+
+# Present value discounted over 200 years w/o climate change
+# Value calculation
+pv_df_0_B <- data.frame(t = t_vector) %>% 
+  mutate(pv_0 = (utility_df_T_0_B$utility)/(1 + r_given)^(t_vector))
+
+pv_0_B = sum(pv_df_0_B$pv_0_B)
+```
+
+
+
+
+Sensitivity of g
+```{r}
+# T = 4.4 ***********************************************************************
+# g = .01 + .001 = .011
+
+# Consumption df
+
+consum_df_g_01 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 4.4,
+                              B = 0.05,
+                              g = 0.011))
+
+# Utility df
+
+C_g_01 <- consum_df_g_01$consum
+
+utility_df_g_01 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_g_01) %>% 
+  mutate(utility = utility(C = C_g_01,
+                           n = .5))
+
+#T = 0****************************************************************************
+# g = .01 + .001 = .011
+# Temperature df
+
+# Consumption df
+
+consum_df_T_0_g <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 0,
+                              B = 0.05,
+                              g = 0.011))
+
+# Utility df
+
+C_0_g <- consum_df_T_0_g$consum
+
+utility_df_T_0_g <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_0_g) %>% 
+  mutate(utility = utility(C = C_0_g,
+                           n = .5))
+
+
+# discount rate
+r_g <- r(.005, .5, .011) 
+
+# Value calculation
+pv_df_g_01 <- data.frame(t = t_vector) %>% 
+  mutate(pv_g_01 = (utility_df_g_01$utility)/(1 + r_g)^(t_vector))
+
+pv_g_01 = sum(pv_df_g_01$pv_g_01)
+
+# Present value discounted over 200 years w/o climate change
+
+# Value calculation
+pv_df_0_g <- data.frame(t = t_vector) %>% 
+  mutate(pv_0_g = (utility_df_T_0_g$utility)/(1 + r_g)^(t_vector))
+
+pv_0_g = sum(pv_df_0_g$pv_0_g)
+```
+
+Sensitivity of n
+```{r}
+# Present value discounted over 200 years w/ climate change
+
+# discount rate
+r_given <- r(.005, .5, .01)
+
+# Value calculation
+pv_df_4_4 <- data.frame(t = t_vector) %>% 
+  mutate(pv_4_4 = (utility_df_T_4_4$utility)/(1 + r_given)^(t_vector))
+
+pv_4_4 = sum(pv_df_4_4$pv_4_4)
+
+# Present value discounted over 200 years w/o climate change
+
+# Value calculation
+pv_df_0 <- data.frame(t = t_vector) %>% 
+  mutate(pv_0 = (utility_df_T_0$utility)/(1 + r_given)^(t_vector))
+
+pv_0 = sum(pv_df_0$pv_0)
+```
+
+
 
 
 
