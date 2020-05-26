@@ -620,7 +620,6 @@ L_n_sens <- abs(pv_0_n-pv_n_55)/pv_0_n * 100
 ```
 
 
-
 **Question 2c**
 
 Givens:
