@@ -362,23 +362,6 @@ L_cc <- abs(pv_0-pv_4_4)/pv_0 * 100
 
 ```
 
-Plots for visualization
-
-
-```{r}
-ggplot () +
-  geom_point(data = utility_df_T_0,
-             aes( x = t,
-                  y = utility),
-                  color = "blue") +
-  geom_point(data = utility_df_T_4_4,
-             aes( x = t,
-                  y = utility),
-                  color = "green") 
-```
-
-
-
 
 
 **Question 2b**
@@ -425,6 +408,13 @@ pv_4_84 = sum(pv_df_4_84$pv_4_84)
 
 ```
 
+Percentage Loss (L) for T Sensitivy Analysis
+```{r}
+
+L_T_sens <- abs(pv_0-pv_4_84)/pv_0 * 100
+
+
+```
 
 
 Sensitivity of B
@@ -496,6 +486,13 @@ pv_0_B = sum(pv_df_0_B$pv_0_B)
 ```
 
 
+Percentage Loss (L) for B Sensitivy Analysis
+```{r}
+
+L_B_sens <- abs(pv_0_B-pv_B_055)/pv_0_B * 100
+
+
+```
 
 
 Sensitivity of g
@@ -560,6 +557,16 @@ pv_df_0_g <- data.frame(t = t_vector) %>%
 pv_0_g = sum(pv_df_0_g$pv_0_g)
 ```
 
+
+Percentage Loss (L) for g Sensitivy Analysis
+```{r}
+
+L_g_sens <- abs(pv_0_g-pv_g_01)/pv_0_g * 100
+
+
+```
+
+
 Sensitivity of n
 ```{r}
 # T = 4.4************************************************************************
@@ -604,6 +611,13 @@ pv_0_n = sum(pv_df_0_n$pv_0_n)
 ```
 
 
+Percentage Loss (L) for n Sensitivy Analysis
+```{r}
+
+L_n_sens <- abs(pv_0_n-pv_n_55)/pv_0_n * 100
+
+
+```
 
 
 
