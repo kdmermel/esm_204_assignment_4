@@ -631,14 +631,20 @@ g = 0.01
 B = 0.05
 
 ```{r}
-
-
-pv_with_discount_T_0 <- data.frame(t = t_vector)  %>% 
-  mutate(pv_with_discount =  (utility(C = C_0,n = .5)) * (1 + r_given)^(t_vector))
-
-
+crazy_idea <- function(theta) { 
+  out = (1-theta)^(1-n)*pv_0
+  return(out)
+  
+  
+theta_vector <- seq(0,1,by = .005)
 n = 0.5
 
+pv_theta_T_4_4 <- data.frame(t = t_vector)  %>% 
+  mutate(theta = theta_vector) %>% 
+  mutate( pv_theta = crazy_idea(theta_vector))
+
+
+}
 theta = (pv_4_4 /(sum(pv_with_discount_T_0)))^ (1 / (1-n))
 ```
 
