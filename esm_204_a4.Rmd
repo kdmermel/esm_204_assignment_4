@@ -6,6 +6,9 @@ output: pdf_document
 ---
 
 Overall questions:
+  2c
+    Do we care about the discount rate for 2c?
+    Are we comparing pv or utility?
 
 
 ```{r setup, include=FALSE}
@@ -257,7 +260,7 @@ ggplot () +
                   color = "red")
 ```
 
-Question 2a
+**Question 2a**
 
 *T = 4.4*
 ```{r}
@@ -332,12 +335,35 @@ L_cc <- abs(pv_0-pv_4_4)/pv_0 * 100
 
 ```
 
+Plots for visualization
+
+
+```{r}
+ggplot () +
+  geom_point(data = utility_df_T_0,
+             aes( x = t,
+                  y = utility),
+                  color = "blue") +
+  geom_point(data = utility_df_T_4_4,
+             aes( x = t,
+                  y = utility),
+                  color = "green") 
+```
 
 
 
 
 
+**Question 2b**
 
+
+```{r}
+
+```
+
+
+
+**Question 2c**
 
 
 
