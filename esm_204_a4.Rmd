@@ -631,84 +631,27 @@ g = 0.01
 B = 0.05
 
 ```{r}
-crazy_idea <- function(theta) { 
-  out = (1-theta)^(1-n)*pv_0
-  return(out)
-  
-  
+# Made the below function to populate values to a data frame for values of theta from 0 - 1. pv_theta is eqiuvalent to the present value at each one of those thetas.
+# To match pv_4_4 = 198.66 we have to find the pv_theta value that matches 198.66. It is around 40%
+
+#Givens:
 theta_vector <- seq(0,1,by = .005)
 n = 0.5
 
+theta_solver_pv_0 <- function(theta) { 
+  out = (1-theta)^(1-n)*pv_0
+  return(out)
+  
 pv_theta_T_4_4 <- data.frame(t = t_vector)  %>% 
   mutate(theta = theta_vector) %>% 
-  mutate( pv_theta = crazy_idea(theta_vector))
-
-
+  mutate( pv_theta = theta_solver_pv_0(theta_vector))
 }
-theta = (pv_4_4 /(sum(pv_with_discount_T_0)))^ (1 / (1-n))
+
+
 ```
 
 
-
-
-# Consumption df
-
-consum_df_T_0 <- data.frame(t = t_vector) %>% 
-  mutate(consum = consumption(t_vector,
-                              t_diff = 0,
-                              B = 0.05,
-                              g = 0.01))
-
-# Utility df
-
-C_0 <- consum_df_T_0$consum
-
-utility_df_T_0 <- data.frame(t = t_vector) %>% 
-  mutate(consum = C_0) %>% 
-  mutate(utility = utility(C = C_0,
-                           n = .5))
-
-
-
-
-
- Function 1 - Temperature(t)
-
-temp <- function(t, t_diff){
-  out = pmin((t*t_diff)/100,t_diff)
-  return(out)
-}
-
-
-# Function 2 - Retention (t)
-
-retention <- function(t, t_diff, B){
-  out = exp(-B * (temp(t, t_diff))^2)
-  return(out)
-}
-
-
-# Function 3 - Consumption (t)
-consumption <- function(t, t_diff, B, g){
-  out = retention(t, t_diff, B) * exp(g*t)
-  return(out)
-}
-
-
-# Function 4 - Utility (C)
-
-utility <- function(C, n){
-  out = (C^(1-n))/(1-n)
-  return(out)
-}
-
-
-# Function 5 - Discount Rate (Ramsey Rule)
-
-r <- function(d, n, g){
-  out = (d + n*g)
-  return(out)
-}
+Answer = line 80ish
 
 
 
