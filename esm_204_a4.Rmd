@@ -209,55 +209,87 @@ Question 1
 Plot 1a
 ```{r}
 ggplot () +
-  geom_point(data = temp_df_T_0,
-             aes( x = t,
-                  y = temp),
-                  color = "blue") +
-  geom_point(data = temp_df_T_2,
-             aes( x = t,
-                  y = temp),
-                  color = "green") +
-  geom_point(data = temp_df_T_8,
-             aes( x = t,
-                  y = temp),
-                  color = "red")
-
+  geom_line(data = temp_df_T_0,
+            aes( x = t,
+                 y = temp),
+            size = 1.5,
+            color = "blue") +
+  geom_line(data = temp_df_T_2,
+            aes( x = t,
+                 y = temp),
+            size = 1.5,
+            color = "green") +
+  geom_line(data = temp_df_T_8,
+            aes( x = t,
+                 y = temp),
+            size = 1.5,
+            color = "red") +
+  labs(title = "Predictions of Temperature Increase Due to Climate Change" ,
+       x = "Time (years)",
+       y = "Temperature Increase Relative to Present (degrees)",
+       caption = "Figure 1") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0),
+        axis.title.y = element_text(size = 10))
              
 ```
 
 Plot 1b
 ```{r}
 ggplot () +
-  geom_point(data = consum_df_T_0,
+  geom_line(data = consum_df_T_0,
              aes( x = t,
                   y = consum),
-                  color = "blue") +
-  geom_point(data = consum_df_T_2,
+             size = 1.5,
+             color = "blue") +
+  geom_line(data = consum_df_T_2,
              aes( x = t,
                   y = consum),
-                  color = "green") +
-  geom_point(data = consum_df_T_8,
+             size = 1.5,
+             color = "green") +
+  geom_line(data = consum_df_T_8,
              aes( x = t,
                   y = consum),
-                  color = "red")
+             size = 1.5,
+             color = "red") +
+  labs(title = "" ,
+       x = "Time (years)",
+       y = "",
+       caption = "Figure 2") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0),
+        axis.title.y = element_text(size = 10))
 ```
 
 
 
 ```{r}
 ggplot () +
-  geom_point(data = utility_df_T_0,
-             aes( x = t,
+  geom_line(data = utility_df_T_0,
+            aes( x = t,
                   y = utility),
-                  color = "blue") +
-  geom_point(data = utility_df_T_2,
-             aes( x = t,
+            size = 1.5,
+            color = "blue") +
+  geom_line(data = utility_df_T_2,
+            aes( x = t,
                   y = utility),
-                  color = "green") +
-  geom_point(data = utility_df_T_8,
-             aes( x = t,
+            size = 1.5,
+            color = "green") +
+  geom_line(data = utility_df_T_8,
+            aes( x = t,
                   y = utility),
-                  color = "red")
+            size = 1.5,
+            color = "red") +
+labs(title = "" ,
+       x = "Time (years)",
+       y = "",
+       caption = "Figure 3") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0),
+        axis.title.y = element_text(size = 10))
 ```
 
 **Question 2a**
@@ -577,17 +609,87 @@ pv_0_n = sum(pv_df_0_n$pv_0_n)
 
 **Question 2c**
 
+Givens:
+Vnot = p_4_4
+Vsubt = utility(C) for T = 0 = utility_df_T_0
+d = 0.005
+n = 0.5
+g = 0.01
+B = 0.05
+
+```{r}
+
+
+pv_with_discount_T_0 <- data.frame(t = t_vector)  %>% 
+  mutate(pv_with_discount =  (utility(C = C_0,n = .5)) * (1 + r_given)^(t_vector))
+
+
+n = 0.5
+
+theta = (pv_4_4 /(sum(pv_with_discount_T_0)))^ (1 / (1-n))
+```
+
+
+
+
+# Consumption df
+
+consum_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 0,
+                              B = 0.05,
+                              g = 0.01))
+
+# Utility df
+
+C_0 <- consum_df_T_0$consum
+
+utility_df_T_0 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_0) %>% 
+  mutate(utility = utility(C = C_0,
+                           n = .5))
 
 
 
 
 
+ Function 1 - Temperature(t)
+
+temp <- function(t, t_diff){
+  out = pmin((t*t_diff)/100,t_diff)
+  return(out)
+}
 
 
+# Function 2 - Retention (t)
+
+retention <- function(t, t_diff, B){
+  out = exp(-B * (temp(t, t_diff))^2)
+  return(out)
+}
 
 
+# Function 3 - Consumption (t)
+consumption <- function(t, t_diff, B, g){
+  out = retention(t, t_diff, B) * exp(g*t)
+  return(out)
+}
 
 
+# Function 4 - Utility (C)
+
+utility <- function(C, n){
+  out = (C^(1-n))/(1-n)
+  return(out)
+}
+
+
+# Function 5 - Discount Rate (Ramsey Rule)
+
+r <- function(d, n, g){
+  out = (d + n*g)
+  return(out)
+}
 
 
 
