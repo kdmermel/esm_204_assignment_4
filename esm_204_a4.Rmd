@@ -458,7 +458,7 @@ utility_df_T_0_B <- data.frame(t = t_vector) %>%
 # Present value discounted over 200 years w/o climate change
 # Value calculation
 pv_df_0_B <- data.frame(t = t_vector) %>% 
-  mutate(pv_0 = (utility_df_T_0_B$utility)/(1 + r_given)^(t_vector))
+  mutate(pv_0_B = (utility_df_T_0_B$utility)/(1 + r_given)^(t_vector))
 
 pv_0_B = sum(pv_df_0_B$pv_0_B)
 ```
@@ -530,24 +530,45 @@ pv_0_g = sum(pv_df_0_g$pv_0_g)
 
 Sensitivity of n
 ```{r}
-# Present value discounted over 200 years w/ climate change
+# T = 4.4************************************************************************
+# n = 0.5 +.05 = 0.55
+
+
+# Utility df
+# C_4_4 is not affected by N so it is ok to leave as is
+
+utility_df_n_55 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_4_4) %>% 
+  mutate(utility = utility(C = C_4_4,
+                           n = .55))
+
+# T = 0 ************************************************************************
+# n = 0.5 +.05 = 0.55
+
+# Utility df
+# Leave consum = C_0 because it is unaffected by n
+
+utility_df_T_0_n <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_0) %>% 
+  mutate(utility = utility(C = C_0,
+                           n = .55))
 
 # discount rate
-r_given <- r(.005, .5, .01)
+r_n <- r(.005, .55, .01) 
 
 # Value calculation
-pv_df_4_4 <- data.frame(t = t_vector) %>% 
-  mutate(pv_4_4 = (utility_df_T_4_4$utility)/(1 + r_given)^(t_vector))
+pv_df_n_55 <- data.frame(t = t_vector) %>% 
+  mutate(pv_n_55 = (utility_df_n_55$utility)/(1 + r_n)^(t_vector))
 
-pv_4_4 = sum(pv_df_4_4$pv_4_4)
+pv_n_55 = sum(pv_df_n_55$pv_n_55)
 
 # Present value discounted over 200 years w/o climate change
 
 # Value calculation
-pv_df_0 <- data.frame(t = t_vector) %>% 
-  mutate(pv_0 = (utility_df_T_0$utility)/(1 + r_given)^(t_vector))
+pv_df_0_n <- data.frame(t = t_vector) %>% 
+  mutate(pv_0_n = (utility_df_T_0_n$utility)/(1 + r_n)^(t_vector))
 
-pv_0 = sum(pv_df_0$pv_0)
+pv_0_n = sum(pv_df_0_n$pv_0_n)
 ```
 
 
