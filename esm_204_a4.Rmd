@@ -1,12 +1,12 @@
 ---
-title: "Assignment 4"
-author: "Kazia Mermel"
-date: "5/24/2020"
+title: "ESM204: Assignment 4"
+author: "Garrett Eyer, Elliott Matthews, and Kazia Mermel"
+date: "5/27/2020"
 output: pdf_document
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
@@ -25,9 +25,9 @@ t_vector <- seq(0,200, by = 1)
 ```
 
 
-Structure for Functions 1 - 5 is next.
+First, we built out the structure for Functions 1 - 5.
 
-```{r}
+```{r, echo = FALSE}
 # Function 1 - Temperature(t)
 
 temp <- function(t, t_diff){
@@ -69,6 +69,7 @@ r <- function(d, n, g){
 
 ```
 
+Then, we created data frames for the temperature, economic retention, consumption, and utility over time under our three climate scenarios: no climate change (T = 0), modest climate change (T = 2), and extreme climate change (T = 8).
 
 *Data Frames for Plots*
 
@@ -82,7 +83,7 @@ d = .005   # delta
 
 *T = 0*
 
-```{r}
+```{r, echo = FALSE}
 # T = 0
 
 # Temperature df
@@ -119,7 +120,7 @@ utility_df_T_0 <- data.frame(t = t_vector) %>%
 
 *T = 2*
 
-```{r}
+```{r, echo = FALSE}
 # T = 2
 
 # Temperature df
@@ -154,7 +155,7 @@ utility_df_T_2 <- data.frame(t = t_vector) %>%
 ```
 
 *T = 8*
-```{r}
+```{r, echo = FALSE}
 # T = 8
 
 # Temperature df
@@ -189,7 +190,7 @@ utility_df_T_8 <- data.frame(t = t_vector) %>%
 ```
 
 Question 1
-```{r}
+```{r, echo = FALSE}
 # a
 # plot temperature over time
 # scenario 1: no climate change
@@ -202,7 +203,7 @@ Question 1
 
 
 Plot 1a
-```{r}
+```{r, echo = FALSE}
 ggplot () +
   geom_line(data = temp_df_T_0,
             aes( x = t,
@@ -221,7 +222,7 @@ ggplot () +
             color = "red") +
   labs(title = "Predictions of Temperature Increase Due to Climate Change" ,
        x = "Time (years)",
-       y = "Temperature Increase Relative to Present (degrees)",
+       y = "Temperature Increase in 100 Years\nRelative to Present (degrees)",
        caption = "Figure 1") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
@@ -232,7 +233,7 @@ ggplot () +
 Figure 1 (above) plots estimated temperature change over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: no climate change (blue), modest climate change (green), and extreme climate change (red).
 
 Plot 1b
-```{r}
+```{r, echo = FALSE}
 ggplot () +
   geom_line(data = consum_df_T_0,
              aes( x = t,
@@ -258,11 +259,11 @@ ggplot () +
         plot.caption = element_text(hjust = 0),
         axis.title.y = element_text(size = 10))
 ```
-Figure 2 (above) plots economic activity (consumption) change over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
+Figure 2 (above) plots economic activity (consumption) change over time for three possible climate scenarios. In order from bottom to top we have consumption changes over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
 
 
 
-```{r}
+```{r, echo = FALSE}
 ggplot () +
   geom_line(data = utility_df_T_0,
             aes( x = t,
@@ -279,23 +280,23 @@ ggplot () +
                   y = utility),
             size = 1.5,
             color = "red") +
-labs(title = "Climate Change's Effect on Discounted Utility Over Time" ,
+labs(title = "Climate Change's Effect on Undiscounted Utility Over Time" ,
        x = "Time (years)",
-       y = "Discounted Utility (dollars)",
+       y = "Undiscounted Utility (dollars)",
        caption = "Figure 3") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0),
         axis.title.y = element_text(size = 10))
 ```
-Figure 3 (above) plots estimated changes in discounted societal utility over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
+Figure 3 (above) plots estimated changes in undiscounted societal utility over time for three possible climate scenarios. In order from bottom to top we have utility  over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
 
 
 
 **Question 2a**
 
 *T = 4.4*
-```{r}
+```{r, echo = FALSE}
 # T = 4.4
 # Maintained givens from plot 1
 
@@ -331,9 +332,8 @@ utility_df_T_4_4 <- data.frame(t = t_vector) %>%
 ```
 
 
-Present value discounted over 200 years w/ & w/o climate change
 
-```{r}
+```{r, echo = FALSE}
 # Present value discounted over 200 years w/ climate change
 
 # discount rate
@@ -354,20 +354,28 @@ pv_df_0 <- data.frame(t = t_vector) %>%
 pv_0 = sum(pv_df_0$pv_0)
 ```
 
+
+
+The present value of the utility over the next 200 years with a warming of 4.4 degrees is 198.66. The present value of the utility over the next 200 years in the case of no warming is 255.27.
+
+
 Percentage Loss (L)
-```{r}
+```{r, echo = FALSE}
 
 L_cc <- abs(pv_0-pv_4_4)/pv_0 * 100
 
 
 ```
 
-The present value (i.e. discounted) utility over the next 200 years without climate change is estimated to be $255.27. With an increase in temperature of 4.4 degrees over the next 200 years is estimated to be $198.66. There is a 22.177% loss in utility between the 4.4 degree increase and the busiess as usual scenario. 
+To determine the present value of the utility under these scenarios, we summed the discounted utility over 200 years for each scenario. The present value (i.e. discounted) utility over the next 200 years without climate change is estimated to be $255.27. With an increase in temperature of 4.4 degrees over the next 200 years is estimated to be $198.66. There is a 22.177% loss in utility under a 4.4 degree warming regime relative to the 0 degree warming regime.
+
 
 **Question 2b**
 
-Sensitivity of T
-```{r}
+Next, we conducted a sensitivity analysis of the percentage loss in present value (L) for T, g, n, and B.
+
+Sensitivity to T
+```{r, echo = FALSE}
 # Present value discounted over 200 years w/ climate change
 # T = 4.4 + .44 = 4.84
 
@@ -408,8 +416,10 @@ pv_4_84 = sum(pv_df_4_84$pv_4_84)
 
 ```
 
+
+
 Percentage Loss (L) for T Sensitivy Analysis
-```{r}
+```{r, echo = FALSE}
 
 L_T_sens <- abs(pv_0-pv_4_84)/pv_0 * 100
 
@@ -417,8 +427,9 @@ L_T_sens <- abs(pv_0-pv_4_84)/pv_0 * 100
 ```
 
 
+
 Sensitivity of B
-```{r}
+```{r, echo = FALSE}
 # T = 4.4 ************************************************************************************************
 # B = .055
 
@@ -487,7 +498,7 @@ pv_0_B = sum(pv_df_0_B$pv_0_B)
 
 
 Percentage Loss (L) for B Sensitivy Analysis
-```{r}
+```{r, echo = FALSE}
 
 L_B_sens <- abs(pv_0_B-pv_B_055)/pv_0_B * 100
 
@@ -496,7 +507,7 @@ L_B_sens <- abs(pv_0_B-pv_B_055)/pv_0_B * 100
 
 
 Sensitivity of g
-```{r}
+```{r, echo = FALSE}
 # T = 4.4 ***********************************************************************
 # g = .01 + .001 = .011
 
@@ -559,7 +570,7 @@ pv_0_g = sum(pv_df_0_g$pv_0_g)
 
 
 Percentage Loss (L) for g Sensitivy Analysis
-```{r}
+```{r, echo = FALSE}
 
 L_g_sens <- abs(pv_0_g-pv_g_01)/pv_0_g * 100
 
@@ -568,7 +579,7 @@ L_g_sens <- abs(pv_0_g-pv_g_01)/pv_0_g * 100
 
 
 Sensitivity of n
-```{r}
+```{r, echo = FALSE}
 # T = 4.4************************************************************************
 # n = 0.5 +.05 = 0.55
 
@@ -612,14 +623,14 @@ pv_0_n = sum(pv_df_0_n$pv_0_n)
 
 
 Percentage Loss (L) for n Sensitivy Analysis
-```{r}
+```{r, echo = FALSE}
 
 L_n_sens <- abs(pv_0_n-pv_n_55)/pv_0_n * 100
 
 
 ```
 
-Our calculation of L in 2a is not overly sensitive to different changes in specific parameters. With a 10% increase in T, g, n, and B, there are associated changes of 3.62%, 0.4%, 2.581%, and 1.762% compared the original L we calculated. Given this information, it is safe to assume that our climate-economy model is fairly robust to possible error. 
+Our calculation of L in 2a is not overly sensitive to different changes in specific parameters. With a 10% increase in T, g, n, and B, L increases by  3.62%, 0.4%, 2.581%, and 1.762%, respectively, compared to the original L we calculated. Given this information, it is safe to assume that our climate-economy model is fairly robust to possible modeling errors in our estimates of those parameters. 
 
 **Question 2c**
 
@@ -631,7 +642,7 @@ n = 0.5
 g = 0.01
 B = 0.05
 
-```{r}
+```{r, echo = FALSE}
 # Made the below function to populate values to a data frame for values of theta from 0 - 1. pv_theta is eqiuvalent to the present value at each one of those thetas.
 # To match pv_4_4 = 198.66 we have to find the pv_theta value that matches 198.66. It is around 40%
 
@@ -654,13 +665,13 @@ pv_theta_T_4_4 <- data.frame(t = t_vector)  %>%
 
 Answer = line 80is,  approx 40% (39.5)
 
-The maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change (from a 4.4 degree increase) is equal to approximately 40% of consumption every year.
+The maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change (from a 4.4 degree increase) is equal to approximately 40% of consumption every year. We determined this by creating a vector showing present values under the no warming model for a variety of thetas and determining which theta produced a present value nearly the same as the present value under 4.4 degrees of warming.
 
 **Question 2d**
 
-Before solving for theta star we need to calculate utility_df_T_4, utility_df_T_6, pv_2, pv_4, pv_6.
+Before solving for theta star we needed to create a dataframe for utility values over time at T = 4 (utility_df_T_4) and T = 6 (utility_df_T_6). Then we need to determine the present value under 2 degree, 4 degree, and 6 degree warming scenarios (pv_2, pv_4, pv_6).
 
-```{r}
+```{r, echo = FALSE}
 #pv_2
 
 pv_df_2 <- data.frame(t = t_vector) %>% 
@@ -669,7 +680,8 @@ pv_df_2 <- data.frame(t = t_vector) %>%
 pv_2 = sum(pv_df_2$pv_2)
 
 ```
-```{r}
+
+```{r, echo = FALSE}
 # T = 4
 
 # Temperature df
@@ -701,7 +713,8 @@ utility_df_T_4 <- data.frame(t = t_vector) %>%
   mutate(utility = utility(C = C_4,
                            n = .5))
 ```
-```{r}
+
+```{r, echo = FALSE}
 #pv_4
 
 pv_df_4 <- data.frame(t = t_vector) %>% 
@@ -711,7 +724,7 @@ pv_4 = sum(pv_df_4$pv_4)
 
 ```
 
-```{r}
+```{r, echo = FALSE}
 # T = 6
 
 # Temperature df
@@ -745,7 +758,7 @@ utility_df_T_6 <- data.frame(t = t_vector) %>%
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 #pv_6
 
 pv_df_6 <- data.frame(t = t_vector) %>% 
@@ -755,7 +768,7 @@ pv_6 = sum(pv_df_6$pv_6)
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 
 #theta_solver_prob <- function(theta) { 
 #  out = (1-theta)^(1-n)*((pv_2*0.2)+(pv_4*0.5) + (pv_6*0.3))
@@ -777,9 +790,7 @@ pv_theta_T_prob <- data.frame(t = t_vector)  %>%
 
 0.025 = 1/40 = 2.5%
 
-Under uncertainty, the maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change is equal to approximately ... having trouble finding it tbh...unsure why 
-
-
+Under uncertainty, the maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change is equal to approximately 38%. To determine this, we calculated the present value under uncertainty, which we determined to be 201.34. Then, we determined which value for theta would return a present value of 201.34 under zero warming conditions.
 
 
 
