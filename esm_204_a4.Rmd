@@ -655,6 +655,149 @@ Answer = line 80ish
 
 
 
+**Question 2d**
+
+Before solving for theta star we need to calculate utility_df_T_4, utility_df_T_6, pv_2, pv_4, pv_6.
+
+```{r}
+#pv_2
+
+pv_df_2 <- data.frame(t = t_vector) %>% 
+  mutate(pv_2 = (utility_df_T_2$utility)/(1 + r_given)^(t_vector))
+
+pv_2 = sum(pv_df_2$pv_2)
+
+```
+```{r}
+# T = 4
+
+# Temperature df
+
+temp_df_T_4 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 4)) 
+
+# Retention df
+
+retent_df_T_4 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 4,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_4 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 4,
+                              B = 0.05,
+                              g = 0.01))
+
+# Utility df
+
+C_4 <- consum_df_T_4$consum
+
+utility_df_T_4 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_4) %>% 
+  mutate(utility = utility(C = C_4,
+                           n = .5))
+```
+```{r}
+#pv_4
+
+pv_df_4 <- data.frame(t = t_vector) %>% 
+  mutate(pv_4 = (utility_df_T_4$utility)/(1 + r_given)^(t_vector))
+
+pv_4 = sum(pv_df_4$pv_4)
+
+```
+
+```{r}
+# T = 6
+
+# Temperature df
+
+temp_df_T_6 <- data.frame(t = t_vector) %>% 
+  mutate(temp = temp(t_vector,
+                     t_diff = 6)) 
+
+# Retention df
+
+retent_df_T_6 <- data.frame(t = t_vector) %>% 
+  mutate(retent = retention(t_vector,
+                            t_diff = 6,
+                            B = .05)) 
+# Consumption df
+
+consum_df_T_6 <- data.frame(t = t_vector) %>% 
+  mutate(consum = consumption(t_vector,
+                              t_diff = 6,
+                              B = 0.05,
+                              g = 0.01))
+
+# Utility df
+
+C_6 <- consum_df_T_6$consum
+
+utility_df_T_6 <- data.frame(t = t_vector) %>% 
+  mutate(consum = C_6) %>% 
+  mutate(utility = utility(C = C_6,
+                           n = .5))
+```
+
+
+```{r}
+#pv_6
+
+pv_df_6 <- data.frame(t = t_vector) %>% 
+  mutate(pv_6 = (utility_df_T_6$utility)/(1 + r_given)^(t_vector))
+
+pv_6 = sum(pv_df_6$pv_6)
+```
+
+
+```{r}
+
+theta_solver_prob <- function(theta) { 
+  out = (1-theta)^(1-n)*((pv_2*0.2)+(pv_4*0.5) + (pv_6*0.3))
+  return(out)
+  
+pv_theta_T_prob <- data.frame(t = t_vector)  %>% 
+  mutate(theta = theta_vector) %>% 
+  mutate( pv_theta = theta_solver_prob(theta_vector))
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
