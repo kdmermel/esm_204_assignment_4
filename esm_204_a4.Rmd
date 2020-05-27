@@ -5,11 +5,6 @@ date: "5/24/2020"
 output: pdf_document
 ---
 
-Overall questions:
-  2c
-    Do we care about the discount rate for 2c?
-    Are we comparing pv or utility?
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -234,6 +229,7 @@ ggplot () +
         axis.title.y = element_text(size = 10))
              
 ```
+Figure 1 (above) plots estimated temperature change over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: no climate change (blue), modest climate change (green), and extreme climate change (red).
 
 Plot 1b
 ```{r}
@@ -253,15 +249,16 @@ ggplot () +
                   y = consum),
              size = 1.5,
              color = "red") +
-  labs(title = "" ,
+  labs(title = "Climate Change's Effect on Consumption Over Time" ,
        x = "Time (years)",
-       y = "",
+       y = "Consumption (dollars)",
        caption = "Figure 2") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0),
         axis.title.y = element_text(size = 10))
 ```
+Figure 2 (above) plots economic activity (consumption) change over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
 
 
 
@@ -282,15 +279,18 @@ ggplot () +
                   y = utility),
             size = 1.5,
             color = "red") +
-labs(title = "" ,
+labs(title = "Climate Change's Effect on Discounted Utility Over Time" ,
        x = "Time (years)",
-       y = "",
+       y = "Discounted Utility (dollars)",
        caption = "Figure 3") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.caption = element_text(hjust = 0),
         axis.title.y = element_text(size = 10))
 ```
+Figure 3 (above) plots estimated changes in discounted societal utility over time for three possible climate scenarios. In order from bottom to top we have temperature changes over time for: extreme climate change (red), modest climate change (green), and no climate change (blue).
+
+
 
 **Question 2a**
 
@@ -362,7 +362,7 @@ L_cc <- abs(pv_0-pv_4_4)/pv_0 * 100
 
 ```
 
-
+The present value (i.e. discounted) utility over the next 200 years without climate change is estimated to be $255.27. With an increase in temperature of 4.4 degrees over the next 200 years is estimated to be $198.66. There is a 22.177% loss in utility between the 4.4 degree increase and the busiess as usual scenario. 
 
 **Question 2b**
 
@@ -619,6 +619,7 @@ L_n_sens <- abs(pv_0_n-pv_n_55)/pv_0_n * 100
 
 ```
 
+Our calculation of L in 2a is not overly sensitive to different changes in specific parameters. With a 10% increase in T, g, n, and B, there are associated changes of 3.62%, 0.4%, 2.581%, and 1.762% compared the original L we calculated. Given this information, it is safe to assume that our climate-economy model is fairly robust to possible error. 
 
 **Question 2c**
 
@@ -653,7 +654,7 @@ pv_theta_T_4_4 <- data.frame(t = t_vector)  %>%
 
 Answer = line 80is,  approx 40% (39.5)
 
-
+The maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change (from a 4.4 degree increase) is equal to approximately 40% of consumption every year.
 
 **Question 2d**
 
@@ -771,6 +772,7 @@ pv_theta_T_prob <- data.frame(t = t_vector)  %>%
 
 0.025 = 1/40 = 2.5%
 
+Under uncertainty, the maximum fractional value of consumption society would be willing to endure every year to completely prevent climate change is equal to approximately ... having trouble finding it tbh...unsure why 
 
 
 
